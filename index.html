@@ -3,38 +3,87 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Чтение файла output.json</title>
+    <title>Генератор слов</title>
 </head>
 <body>
 
-    <h1>Чтение файла output.json</h1>
+    <h1>Генератор слов</h1>
 
+    <!-- Ввод букв -->
+    <label for="lettersInput">Введите буквы без пробелов:</label>
+    <input type="text" id="lettersInput" placeholder="Например, командир">
+    <button onclick="generateWords()">Сгенерировать слова</button>
+
+    <!-- Контейнер для вывода созданных слов -->
     <div id="output-container"></div>
 
     <script>
-    
-fetch('https://raw.githubusercontent.com/Adamlit88/jsproject/main/output.json')
-            .then(response => response.json())
-            .then(data => {
-                // Распечатать данные на странице
-                displayData(data);
-            })
-            .catch(error => console.error('Ошибка загрузки файла:', error));
+        // Функция для генерации слов из заданной строки букв
+        function generateWords() {
+            const lettersInput = document.getElementById('lettersInput');
+            const inputLetters = lettersInput.value.trim(); // Получаем введенные буквы
 
-        function displayData(data) {
-            // Получите контейнер для вывода данных
+            // Выводим предупреждение, если строка пуста
+            if (!inputLetters) {
+                alert('Введите буквы для генерации слов.');
+                return;
+            }
+
+            fetch('https://raw.githubusercontent.com/Adamlit88/jsproject/main/output.json')
+                .then(response => response.json())
+                .then(data => {
+                    // Фильтруем слова, которые можно составить из введенных букв
+                    const possibleWords = data.words.filter(word => isWordPossible(word, inputLetters));
+
+                    // Распечатываем результат на странице
+                    displayGeneratedWords(possibleWords);
+                })
+                .catch(error => console.error('Ошибка загрузки файла:', error));
+        }
+
+        // Функция для проверки, можно ли из букв строки создать слово
+        function isWordPossible(word, letters) {
+            const wordLetters = word.split('');
+            const tempLetters = letters.split('');
+
+            for (const letter of wordLetters) {
+                const index = tempLetters.indexOf(letter);
+                if (index !== -1) {
+                    tempLetters.splice(index, 1);
+                } else {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        // Функция для отображения созданных слов
+        function displayGeneratedWords(words) {
             const outputContainer = document.getElementById('output-container');
+            outputContainer.innerHTML = ''; // Очищаем предыдущий вывод
 
-            // Создайте элемент для отображения данных
-            const pre = document.createElement('pre');
-            pre.textContent = JSON.stringify(data, null, 2);
+            if (words.length === 0) {
+                outputContainer.textContent = 'Нет слов, которые можно составить из введенных букв.';
+            } else {
+                const heading = document.createElement('h2');
+                heading.textContent = 'Слова, которые можно составить из введенной строки букв:';
 
-            // Добавьте элемент в контейнер
-            outputContainer.appendChild(pre);
+                const list = document.createElement('ul');
+                words.forEach(word => {
+                    const listItem = document.createElement('li');
+                    listItem.textContent = word;
+                    list.appendChild(listItem);
+                });
+
+                outputContainer.appendChild(heading);
+                outputContainer.appendChild(list);
+            }
         }
     </script>
 
 </body>
 </html>
+
 
 
