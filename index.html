@@ -12,14 +12,11 @@
     <div id="output-container"></div>
 
     <script>
-        const apiUrl = 'https://github.com/Adamlit88/jsproject/blob/main/output.json';
-
-fetch(apiUrl)
+    
+fetch('https://raw.githubusercontent.com/Adamlit88/jsproject/main/output.json')
     .then(response => response.json())
     .then(data => {
-        // Декодировать base64-кодированный контент
-        const decodedContent = atob(data.content);
-        console.log(decodedContent);
+        console.log(data);
     })
     .catch(error => console.error('Ошибка загрузки файла:', error));
 
