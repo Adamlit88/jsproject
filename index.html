@@ -9,15 +9,35 @@
 
     <h1>Чтение файла output.json</h1>
 
+    <div id="output-container"></div>
+
     <script>
-        fetch(https://adamlit88.github.io/jsproject/output.json')
+        fetch('https://ваш-пользователь.github.io/ваш-репозиторий/site/output.json')
             .then(response => response.json())
             .then(data => {
-                console.log(data);
+                // Распечатать данные на странице
+                displayData(data);
             })
             .catch(error => console.error('Ошибка загрузки файла:', error));
+
+        function displayData(data) {
+            // Получите контейнер для вывода данных
+            const outputContainer = document.getElementById('output-container');
+
+            // Создайте элементы для отображения данных
+            const heading = document.createElement('h2');
+            heading.textContent = 'Данные из файла output.json:';
+
+            const pre = document.createElement('pre');
+            pre.textContent = JSON.stringify(data, null, 2);
+
+            // Добавьте элементы в контейнер
+            outputContainer.appendChild(heading);
+            outputContainer.appendChild(pre);
+        }
     </script>
 
 </body>
 </html>
+
 
