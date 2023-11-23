@@ -12,13 +12,12 @@
     <div id="output-container"></div>
 
     <script>
-        fetch('https://adamlit88.github.io/jsproject/output.json')
-            .then(response => response.json())
-            .then(data => {
-                // Распечатать данные на странице
-                displayData(data);
-            })
-            .catch(error => console.error('Ошибка загрузки файла:', error));
+        fetch('https://api.github.com/repos/ваш-пользователь/ваш-репозиторий/contents/путь/к/вашему/файлу.json')
+    .then(response => response.json())
+    .then(data => {
+        console.log(atob(data.content)); // декодировать base64-кодированный контент
+    })
+    .catch(error => console.error('Ошибка загрузки файла:', error));
 
         function displayData(data) {
             // Получите контейнер для вывода данных
