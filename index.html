@@ -14,26 +14,22 @@
     <script>
     
 fetch('https://raw.githubusercontent.com/Adamlit88/jsproject/main/output.json')
-    .then(response => response.json())
-    .then(data => {
-        console.log(data);
-    })
-    .catch(error => console.error('Ошибка загрузки файла:', error));
-
+            .then(response => response.json())
+            .then(data => {
+                // Распечатать данные на странице
+                displayData(data);
+            })
+            .catch(error => console.error('Ошибка загрузки файла:', error));
 
         function displayData(data) {
             // Получите контейнер для вывода данных
             const outputContainer = document.getElementById('output-container');
 
-            // Создайте элементы для отображения данных
-            const heading = document.createElement('h2');
-            heading.textContent = 'Данные из файла output.json:';
-
+            // Создайте элемент для отображения данных
             const pre = document.createElement('pre');
             pre.textContent = JSON.stringify(data, null, 2);
 
-            // Добавьте элементы в контейнер
-            outputContainer.appendChild(heading);
+            // Добавьте элемент в контейнер
             outputContainer.appendChild(pre);
         }
     </script>
